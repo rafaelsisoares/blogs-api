@@ -9,6 +9,17 @@ const createUser = async (req, res) => {
     }
 };
 
+const getAllUsers = async (_req, res) => {
+    try {
+        const users = await userService.getAllUsers();
+        res.status(200).json(users);
+    } catch (e) {
+        console.error(e.message);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
     createUser,
+    getAllUsers,
 };
