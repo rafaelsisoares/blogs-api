@@ -26,7 +26,13 @@ const createUser = async (user) => {
 
 const getAllUsers = async () => {
     const users = await User.findAll();
-    return users;
+    const result = users.map(({ id, displayName, email, image }) => ({
+        id,
+        displayName,
+        email,
+        image,
+    }));
+    return result;
 };
 
 module.exports = {
