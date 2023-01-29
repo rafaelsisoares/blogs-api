@@ -11,12 +11,11 @@ module.exports = async (req, res, next) => {
     }
     try {
         const result = await jwt.verify(authorization, JWT_SECRET);
-        if (result) return next();
+        req.user = result;
+        return next();
     } catch (e) {
         e.message = 'Expired or invalid token';
         e.statusCode = 401;
         return next(e);
     }
-    
-    return next();
 };
