@@ -63,8 +63,32 @@ const getPostById = async (id) => {
     return post;
 };
 
+const editPost = async (postId, userId, newContent) => {
+    const targetPost = await BlogPost.findOne({ where: { id: postId } });
+    const { userId: id } = targetPost;
+    if (id !== userId) {
+        const e = new Error('Unauthorized user');
+        e.statusCode = 401;
+        throw e;
+    }
+
+    const { title, content } = newContent;
+    const [editedPost] = await BlogPost.update({ title, content }, { where: { id: postId } });
+
+    if (editedPost !== 1) {
+        const e = new Error('Post does not exist');
+        e.statusCode = 404;
+        throw e;
+    }
+
+    const post = await getPostById(postId);
+
+    return post;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    editPost,
 };
