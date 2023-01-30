@@ -6,6 +6,11 @@ const config = require('../config/config');
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
+const checkUser = async (idPost, idUser) => {
+    const post = await BlogPost.findOne({ where: { id: idPost } });
+    return (post && post.userId === idUser);
+};
+
 const createPost = async ({ title, content, categoryIds, userId }) => {
     const t = await sequelize.transaction();
     
@@ -64,9 +69,7 @@ const getPostById = async (id) => {
 };
 
 const editPost = async (postId, userId, newContent) => {
-    const targetPost = await BlogPost.findOne({ where: { id: postId } });
-    const { userId: id } = targetPost;
-    if (id !== userId) {
+    if (!await checkUser(postId, userId)) {
         const e = new Error('Unauthorized user');
         e.statusCode = 401;
         throw e;
@@ -86,9 +89,27 @@ const editPost = async (postId, userId, newContent) => {
     return post;
 };
 
+const removePost = async (postId, userId) => {
+    const post = await BlogPost.findOne({ where: { id: postId } });
+    if (!post) {
+        const e = new Error('Post does not exist');
+        e.statusCode = 404;
+        throw e;
+    }
+
+    if (!await checkUser(postId, userId)) {
+        const e = new Error('Unauthorized user');
+        e.statusCode = 401;
+        throw e;
+    }
+
+    await BlogPost.destroy({ where: { id: postId } });
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     editPost,
+    removePost,
 };
