@@ -7,5 +7,6 @@ const checkToken = require('../middlewares/checkToken');
 const router = Router();
 
 router.post('/', checkToken, checkNewPostFields, postController.createPost);
+router.get('/', checkToken, postController.getAllPosts);
 
 module.exports = router;
