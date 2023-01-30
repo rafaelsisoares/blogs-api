@@ -11,5 +11,6 @@ router.post('/', checkToken, checkNewPostFields, postController.createPost);
 router.get('/', checkToken, postController.getAllPosts);
 router.get('/:id', checkToken, postController.getPostById);
 router.put('/:id', checkToken, checkEditPostFields, postController.editPost);
+router.delete('/:id', checkToken, postController.removePost);
 
 module.exports = router;
