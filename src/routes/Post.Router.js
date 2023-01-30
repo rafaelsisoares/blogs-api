@@ -8,5 +8,6 @@ const router = Router();
 
 router.post('/', checkToken, checkNewPostFields, postController.createPost);
 router.get('/', checkToken, postController.getAllPosts);
+router.get('/:id', checkToken, postController.getPostById);
 
 module.exports = router;
