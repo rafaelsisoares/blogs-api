@@ -47,8 +47,19 @@ const getUserById = async (idUser) => {
     return { id, displayName, email, image };
 };
 
+const removeUser = async (id) => {
+    const affectedRows = await User.destroy({ where: { id } });
+
+    if (affectedRows !== 1) {
+        const e = new Error('User does not exist');
+        e.statusCode = 404;
+        throw e;
+    }
+};
+
 module.exports = {
     createUser,
     getAllUsers,
     getUserById,
+    removeUser,
 };
