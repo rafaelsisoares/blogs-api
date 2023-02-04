@@ -106,10 +106,28 @@ const removePost = async (postId, userId) => {
     await BlogPost.destroy({ where: { id: postId } });
 };
 
+const getPostsByQuery = async (query) => {
+    const posts = await BlogPost.findAll({
+        where: {
+           [Sequelize.Op.or]: [
+            { title: { [Sequelize.Op.substring]: query } },
+            { content: { [Sequelize.Op.substring]: query } },
+           ],
+        },
+        include: [
+            { model: User, as: 'user', attributes: { exclude: 'password' } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+
+    return posts;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     editPost,
     removePost,
+    getPostsByQuery,
 };
