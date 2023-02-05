@@ -30,7 +30,8 @@ Criar e excuir usuários.
 
 ## Imagens:
 
-<img src="images/blogsAPIPosts.png" alt="Todos os posts" width="50%" />
+<img src="images/blogsAPIPosts.png" alt="Todos os posts" />
+<img src="images/blogsAPIUsers.png" alt="Todos os usuarios" />
 <!-- Olá, Tryber!
 Esse é apenas um arquivo inicial para o README do seu projeto.
 É essencial que você preencha esse documento por conta própria, ok?
